@@ -1,0 +1,270 @@
+import { useState } from "react";
+import "./Registration.scss";
+import { Form, Row, Col, Modal } from "react-bootstrap";
+import MyScrollableTable from "../MyScrollableTable/MyScrollableTable";
+import { Button } from "antd";
+import { Link } from "react-router-dom";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
+const API_URL = "http://localhost:3001/registrations";
+
+const Registr: React.FC = () => {
+  const [isOpen, setIsOpen] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+
+  // Modal üçün form
+  const [formData, setFormData] = useState({
+    name: "",
+    apartment: "",
+    parking: "",
+    payment: "",
+    car: "",
+    date: "",
+  });
+
+  // Search üçün form
+  const [searchData, setSearchData] = useState({
+    name: "",
+    apartment: "",
+    parking: "",
+    payment: "",
+    date: "",
+  });
+
+  const queryClient = useQueryClient();
+
+  // ✓ Baza məlumatlarını yükləyirik
+  const { data: registrations = [] } = useQuery({
+    queryKey: ["registrations"],
+    queryFn: async () => {
+      const res = await fetch(API_URL);
+      return res.json();
+    },
+  });
+
+  // ✓ Yeni qeydiyyat əlavə etmək
+  const addRegistration = useMutation({
+    mutationFn: async (newData: typeof formData) => {
+      const res = await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newData),
+      });
+      if (!res.ok) throw new Error("Əlavə etmək mümkün olmadı");
+      return res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["registrations"] });
+      setFormData({
+        name: "",
+        apartment: "",
+        parking: "",
+        payment: "",
+        car: "",
+        date: "",
+      });
+      setShowModal(false);
+    },
+  });
+
+  // ✓ Modal input change
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, [e.target.id]: e.target.value });
+  };
+
+  // ✓ Search input change
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchData({ ...searchData, [e.target.id]: e.target.value });
+  };
+
+  // ✓ Save as
+  const handleSaveas = (event: React.FormEvent) => {
+    event.preventDefault();
+    addRegistration.mutate(formData);
+  };
+
+  // ✓ Filterlənmiş data
+  const filteredData = registrations.filter((item: any) => {
+    return (
+      item.name.toLowerCase().includes(searchData.name.toLowerCase()) &&
+      item.parking.toLowerCase().includes(searchData.parking.toLowerCase()) &&
+      item.payment.toLowerCase().includes(searchData.payment.toLowerCase()) &&
+      item.date.toLowerCase().includes(searchData.date.toLowerCase())
+    );
+  });
+
+  return (
+    <div className="box-one col-lg-12 col-md-12 col-sm-10 col-12">
+      {/* SIDEBAR */}
+      <div className="row">
+        <div className={`sidebar ${isOpen ? "open" : "collapsed"}`}>
+          <div className="toggle-btn" onClick={() => setIsOpen(!isOpen)}>
+            NM SOFT
+          </div>
+
+          <ul className="menu">
+            <li>
+              <Link to="/registr" className="menu-a">
+                {isOpen && <span>Registration</span>}
+              </Link>
+            </li>
+            <li>
+              <Link to="/users" className="menu-a">
+                {isOpen && <span>Users</span>}
+              </Link>
+            </li>
+            <li>
+              <Link to="/payments" className="menu-a">
+                {isOpen && <span>Payments</span>}
+              </Link>
+            </li>
+            <li>
+              <Link to="/hikvision" className="menu-a">
+                {isOpen && <span>Hikvision</span>}
+              </Link>
+            </li>
+            <li>
+              <Link to="/date" className="menu-a">
+                {isOpen && <span>Date</span>}
+              </Link>
+            </li>
+            <li>
+              <Link to="/prices" className="menu-a">
+                {isOpen && <span>Prices</span>}
+              </Link>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      {/* MAIN CONTENT */}
+      <div className="box-two">
+        {/* TOP FILTERS */}
+        <div className="about-page">
+          <Row className="col-lg-11 col-md-10 col-sm-7 col-4">
+            {/* NEW BUTTON */}
+            <Col xs={12} sm={12} md={12} lg={2}>
+              <Button
+                type="primary"
+                className="about-button w-100 mb-3 p-3"
+                onClick={() => setShowModal(true)}
+              >
+                New
+              </Button>
+            </Col>
+
+            {/* SEARCH INPUTS */}
+            <Col xs={12} sm={6} md={4} lg={2}>
+              <Form.Group controlId="name">
+                <Form.Label>Name</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Click"
+                  id="name"
+                  value={searchData.name}
+                  onChange={handleSearchChange}
+                />
+              </Form.Group>
+            </Col>
+
+            <Col xs={12} sm={6} md={4} lg={2}>
+              <Form.Group controlId="parking">
+                <Form.Label>Parking</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Click"
+                  id="parking"
+                  value={searchData.parking}
+                  onChange={handleSearchChange}
+                />
+              </Form.Group>
+            </Col>
+
+            <Col xs={12} sm={6} md={4} lg={2}>
+              <Form.Group controlId="payment">
+                <Form.Label>Payment</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Click"
+                  id="payment"
+                  value={searchData.payment}
+                  onChange={handleSearchChange}
+                />
+              </Form.Group>
+            </Col>
+
+            <Col xs={12} sm={6} md={4} lg={2}>
+              <Form.Group controlId="date">
+                <Form.Label>Expiration Date</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Click"
+                  id="date"
+                  value={searchData.date}
+                  onChange={handleSearchChange}
+                />
+              </Form.Group>
+            </Col>
+
+            {/* SEARCH BUTTON */}
+            <Col xs={12} sm={12} md={12} lg={2}>
+              <Button type="primary" className="about-button w-100 mt-4 p-3">
+                Search
+              </Button>
+            </Col>
+          </Row>
+        </div>
+
+        {/* TABLE SECTION */}
+        <div className="about-page">
+          <Row className="col-lg-11 col-md-10 col-sm-7 col-4">
+            <Col lg={11} md={9} sm={12} xs={12}>
+              <MyScrollableTable data={filteredData} />
+            </Col>
+          </Row>
+        </div>
+      </div>
+
+      {/* MODAL */}
+      <Modal
+        show={showModal}
+        onHide={() => setShowModal(false)}
+        centered
+        fullscreen="sm-down"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title className="title-modal">Yeni Qeydiyyat</Modal.Title>
+        </Modal.Header>
+
+        <Modal.Body>
+          <Form onSubmit={handleSaveas}>
+            {["name", "surname", "parking", "payment", "car", "date"].map(
+              (field) => (
+                <Form.Group className="mb-3" key={field}>
+                  <Form.Label>
+                    {field[0].toUpperCase() + field.slice(1)}
+                  </Form.Label>
+
+                  <Form.Control
+                    type="text"
+                    id={field}
+                    value={formData[field as keyof typeof formData]}
+                    onChange={handleChange}
+                    placeholder={`Click your ${field}`}
+                    required
+                  />
+                </Form.Group>
+              )
+            )}
+
+            <Button type="primary" htmlType="submit" className="button">
+              Save as
+            </Button>
+          </Form>
+        </Modal.Body>
+      </Modal>
+    </div>
+  );
+};
+
+export default Registr;

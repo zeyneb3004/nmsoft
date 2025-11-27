@@ -1,0 +1,87 @@
+@charset "UTF-8";
+.box-one {
+  background-color: rgb(175, 174, 174);
+  display: flex;
+}
+.box-one .sidebar {
+  background-color: white;
+  color: black;
+  padding-right: 40px;
+  transition: width 0.3s ease;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  width: 220px;
+}
+.box-one .sidebar.collapsed {
+  width: 70px;
+}
+.box-one .sidebar.collapsed .icon {
+  margin-right: 0;
+}
+.box-one .sidebar .toggle-btn {
+  padding-top: 10px;
+  font-size: 20px;
+  cursor: pointer;
+}
+.box-one .sidebar .menu {
+  position: relative;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.box-one .sidebar .menu .menu-a {
+  text-decoration: none;
+  color: black;
+}
+.box-one .sidebar .menu .menu-a.active {
+  color: red; /* klik edilib aktiv olanda qırmızı */
+}
+.box-one .sidebar .menu li {
+  display: flex;
+  align-items: center;
+  padding: 12px 15px;
+  transition: 0.2s;
+}
+.box-one .sidebar .menu li .icon {
+  font-size: 18px;
+  margin-right: 15px;
+}
+.box-one .sidebar .menu li span {
+  white-space: nowrap;
+}
+.box-one .box-two {
+  margin-left: 40px;
+  margin-top: 50px;
+}
+.box-one .box-two .box-two-span {
+  font-weight: bold;
+}
+.box-one .box-two .about-payment {
+  padding: 20px;
+  margin-right: 90px;
+  margin-top: 20px;
+  background-color: white;
+  border-radius: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.box-one .box-two .about-payment .about-button {
+  margin-top: 32px;
+  padding: 19px 45px;
+}
+.box-one .box-two .about-payment .custom {
+  margin-top: 30px;
+  padding-right: 40px;
+  padding-left: 40px;
+}
+
+.title-modal {
+  margin-left: 150px;
+}
+
+.button {
+  margin-top: 30px;
+  width: 100%;
+}/*# sourceMappingURL=Payment.css.map */

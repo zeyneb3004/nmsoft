@@ -1,0 +1,40 @@
+$sidebar-bg: white;
+$sidebar-text: black;
+$hover-bg: #292945;
+$box-bg: rgb(175, 174, 174);
+.about {
+  padding: 20px;
+  margin-right: 90px;
+  margin-top: 20px;
+  background-color: $sidebar-bg;
+  border-radius: 10px;
+
+  @media (max-width: 1000px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .button-onetable {
+    padding: 12px 25px;
+
+    /* Böyük ekrandan kiçik ekrana doğru ölçülər azalmalıdır */
+    @media (max-width: 1000px) {
+      padding: 12px 300px;
+    }
+
+    @media (max-width: 700px) {
+      padding: 12px 200px;
+    }
+     @media (max-width: 540px) {
+      padding: 12px 100px;
+    }
+
+    @media (max-width: 430px) {
+      padding: 12px 100px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+  }
+}

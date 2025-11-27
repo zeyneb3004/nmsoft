@@ -1,0 +1,28 @@
+.about-date {
+  padding: 20px;
+  margin-right: 90px;
+  margin-top: 20px;
+  background-color: white;
+  border-radius: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.about-date .about-button-click {
+  margin-top: 32px;
+  padding: 5px 5px;
+}
+.about-date .custom {
+  margin-top: 30px;
+  padding-right: 40px;
+  padding-left: 40px;
+}
+
+.title-modal {
+  margin-left: 150px;
+}
+
+.button {
+  margin-top: 30px;
+  width: 100%;
+}/*# sourceMappingURL=Date.css.map */

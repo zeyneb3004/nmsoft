@@ -1,0 +1,33 @@
+$sidebar-bg: white;
+$sidebar-text: black;
+$hover-bg: #292945;
+$box-bg: rgb(175, 174, 174);
+.about-date{
+      padding: 20px;
+      margin-right: 90px;
+      margin-top: 20px;
+      background-color: $sidebar-bg;
+      border-radius: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+
+      .about-button-click {
+        margin-top: 32px;
+        padding: 5px 5px;
+      }
+      .custom {
+        margin-top: 30px;
+        padding-right: 40px;
+        padding-left: 40px;
+      }
+    }
+  
+
+.title-modal {
+  margin-left: 150px;
+}
+.button {
+  margin-top: 30px;
+  width: 100%;
+}
