@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import "./Home.scss";
-import built2 from "../../image/build-2.jpg";
-import built3 from "../../image/build-3.jpg";
-import logo from "../../image/logo.jpg";
+import built2 from "../../assets/image/build-2.jpg"
+import built3 from "../../assets/image/build-3.jpg";
+import logo from "../../assets/image/logo.jpg";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Login from "../Login/Login";
+import Login from "../Login/Login"
 
 const images = [built2, built3];
 

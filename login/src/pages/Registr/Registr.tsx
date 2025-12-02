@@ -6,7 +6,9 @@ import { Button } from "antd";
 import { Link } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-const API_URL = "http://localhost:3001/registrations";
+const API_URL = "http://api-park.nmtech.az/e-parking/api/v0/resident/search";
+const TOKEN =
+  "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NiJ9.eyJzZXNzaW9uIjoiNjVjNmFlNWQtOWM5MS00MjljLTgwYjQtZjExNTY0NjdkNzgzIiwiaWQiOjEsInVzZXJuYW1lIjoiYWRtaW4iLCJzdWIiOiJlQmluYSIsImlhdCI6MTc2NDY1Nzg1NCwiZXhwIjoxODUxMDU3ODU0fQ.Wm-25PIr8drznSCD2VShVp-m8RMIZ9GZls6_FFCsiFFqNRjgOQczHGh2iv5kTII_13I3yImHjUDZgJ6gxEkpew"; // swagger-dən aldığın token-i buraya qoy
 
 const Registr: React.FC = () => {
   const [isOpen, setIsOpen] = useState(true);
@@ -14,21 +16,22 @@ const Registr: React.FC = () => {
 
   // Modal üçün form
   const [formData, setFormData] = useState({
-    name: "",
-    apartment: "",
-    parking: "",
-    payment: "",
-    car: "",
-    date: "",
+    username: "",
+    email: "",
+    mobile: "",
+    fullName: "",
+    password: "",
+    repeatedPassword: "",
   });
 
   // Search üçün form
   const [searchData, setSearchData] = useState({
-    name: "",
-    apartment: "",
-    parking: "",
-    payment: "",
-    date: "",
+    username: "",
+    email: "",
+    mobile: "",
+    fullName: "",
+    password: "",
+    repeatedPassword: "",
   });
 
   const queryClient = useQueryClient();
@@ -37,7 +40,12 @@ const Registr: React.FC = () => {
   const { data: registrations = [] } = useQuery({
     queryKey: ["registrations"],
     queryFn: async () => {
-      const res = await fetch(API_URL);
+      const res = await fetch(API_URL, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${TOKEN}`,
+        },
+      });
       return res.json();
     },
   });
@@ -47,7 +55,10 @@ const Registr: React.FC = () => {
     mutationFn: async (newData: typeof formData) => {
       const res = await fetch(API_URL, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${TOKEN}`,
+        },
         body: JSON.stringify(newData),
       });
       if (!res.ok) throw new Error("Əlavə etmək mümkün olmadı");
@@ -56,12 +67,12 @@ const Registr: React.FC = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["registrations"] });
       setFormData({
-        name: "",
-        apartment: "",
-        parking: "",
-        payment: "",
-        car: "",
-        date: "",
+        username: "",
+        email: "",
+        mobile: "",
+        fullName: "",
+        password: "",
+        repeatedPassword: "",
       });
       setShowModal(false);
     },
@@ -86,10 +97,10 @@ const Registr: React.FC = () => {
   // ✓ Filterlənmiş data
   const filteredData = registrations.filter((item: any) => {
     return (
-      item.name.toLowerCase().includes(searchData.name.toLowerCase()) &&
-      item.parking.toLowerCase().includes(searchData.parking.toLowerCase()) &&
-      item.payment.toLowerCase().includes(searchData.payment.toLowerCase()) &&
-      item.date.toLowerCase().includes(searchData.date.toLowerCase())
+      item.name.toLowerCase().includes(searchData.username.toLowerCase()) &&
+      item.parking.toLowerCase().includes(searchData.mobile.toLowerCase()) &&
+      item.payment.toLowerCase().includes(searchData.fullName.toLowerCase()) &&
+      item.date.toLowerCase().includes(searchData.password.toLowerCase())
     );
   });
 
@@ -161,7 +172,7 @@ const Registr: React.FC = () => {
                   type="text"
                   placeholder="Click"
                   id="name"
-                  value={searchData.name}
+                  value={searchData.username}
                   onChange={handleSearchChange}
                 />
               </Form.Group>
@@ -174,7 +185,7 @@ const Registr: React.FC = () => {
                   type="text"
                   placeholder="Click"
                   id="parking"
-                  value={searchData.parking}
+                  value={searchData.email}
                   onChange={handleSearchChange}
                 />
               </Form.Group>
@@ -187,7 +198,7 @@ const Registr: React.FC = () => {
                   type="text"
                   placeholder="Click"
                   id="payment"
-                  value={searchData.payment}
+                  value={searchData.mobile}
                   onChange={handleSearchChange}
                 />
               </Form.Group>
@@ -200,7 +211,7 @@ const Registr: React.FC = () => {
                   type="text"
                   placeholder="Click"
                   id="date"
-                  value={searchData.date}
+                  value={searchData.fullName}
                   onChange={handleSearchChange}
                 />
               </Form.Group>

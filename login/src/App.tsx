@@ -1,13 +1,13 @@
 import "./App.css";
-import Home from "./assets/pages/Home/Home";
-import Registration from "./assets/pages/Registration/Registration";
+import Home from "../src/pages/Home/Home"
+import Registration from "../src/pages/Registration/Registration"
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Users from "./assets/pages/Users/Users";
-import Registr from "./assets/pages/Registr/Registr";
-import Hikvision from "./assets/pages/Hikvision/Hikvision";
-import Payment from "./assets/pages/Payment/Payment";
-import Date from "./assets/pages/Date/Date";
-import Prices from "./assets/pages/Prices/Prices";
+import Users from "../src/pages/Users/Users"
+import Registr from "../src/pages/Registr/Registr"
+import Hikvision from "../src/pages/Hikvision/Hikvision"
+import Payment from "../src/pages/Payment/Payment"
+import Date from "../src/pages/Date/Date"
+import Prices from "../src/pages/Prices/Prices"
 function App() {
   return (
     <Router>
